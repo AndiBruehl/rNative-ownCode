@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "second-app",
-    "slug": "second-app",
+    "name": "learn-app",
+    "slug": "learn-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
