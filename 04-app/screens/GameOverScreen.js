@@ -15,8 +15,9 @@ function GameOverScreen({ roundsNumber, userNumber, onStartNewGame }) {
         />
       </View>
       <Text style={styles.summaryText}>
-        Dein Telefon brauchte <Text style={styles.highlight}>X</Text> Runden, um
-        die Nummer <Text style={styles.highlight}>Y</Text> zu erraten...
+        Dein Telefon brauchte{" "}
+        <Text style={styles.highlight}>{roundsNumber}</Text> Runden, um die
+        Nummer <Text style={styles.highlight}>{userNumber}</Text> zu erraten...
       </Text>
       <PrimaryButton onPress={onStartNewGame}>
         Starte ein neues Spiel
