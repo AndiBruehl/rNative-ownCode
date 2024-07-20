@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { StyleSheet, View, FlatList, Button } from 'react-native';
+import { useState } from "react";
+import { StyleSheet, View, FlatList, Button } from "react-native";
 
-import GoalItem from './components/GoalItem';
-import GoalInput from './components/GoalInput';
+import GoalItem from "./components/GoalItem";
+import GoalInput from "./components/GoalInput";
 
 export default function App() {
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 50,
     paddingHorizontal: 16,
+    backgroundColor: "#2f0566",
   },
   goalsContainer: {
     flex: 5,
