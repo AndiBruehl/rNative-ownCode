@@ -74,21 +74,19 @@ function GameScreen({ userNumber, onGameOver }) {
       <Title>Ist es die...?</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
-        <View>
-          <InstructionText style={styles.instructionText}>
-            Mehr oder weniger?
-          </InstructionText>
-          <View style={styles.buttonsContainer}>
-            <View style={styles.buttonContainer}>
-              <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
-                <Ionicons name="add" size={24} color="white" />{" "}
-              </PrimaryButton>
-            </View>
-            <View style={styles.buttonContainer}>
-              <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
-                <Ionicons name="remove" size={24} color="white" />{" "}
-              </PrimaryButton>
-            </View>
+        <InstructionText style={styles.instructionText}>
+          Mehr oder weniger?
+        </InstructionText>
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
+              <Ionicons name="add" size={24} color="white" />{" "}
+            </PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
+              <Ionicons name="remove" size={24} color="white" />{" "}
+            </PrimaryButton>
           </View>
         </View>
       </Card>

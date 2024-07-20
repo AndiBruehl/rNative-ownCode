@@ -50,11 +50,13 @@ function StartGameScreen({ onPickNumber }) {
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={resetInputHandler}>
+              {" "}
               Zurücksetzen
             </PrimaryButton>
           </View>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={confirmInputHandler}>
+              {" "}
               Bestätigen
             </PrimaryButton>
           </View>
