@@ -1,7 +1,9 @@
-import { Text } from 'react-native';
+import { Text } from "react-native";
 
 function GameOverScreen() {
-  return <Text>Game is over!</Text>
+  return <Text>Game is over!</Text>;
 }
 
 export default GameOverScreen;
+
+// marginTop: 150,
