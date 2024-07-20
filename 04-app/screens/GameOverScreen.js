@@ -7,7 +7,7 @@ import Colors from "../constants/colors";
 function GameOverScreen({ roundsNumber, userNumber, onStartNewGame }) {
   return (
     <View style={styles.rootContainer}>
-      <Title>GAME OVER!</Title>
+      <Title>SPIEL VORBEI!</Title>
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
