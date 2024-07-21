@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { View, StyleSheet, Alert, Text, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Alert,
+  Text,
+  FlatList,
+  Dimensions,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import NumberContainer from "../components/game/NumberContainer";
@@ -109,10 +116,13 @@ function GameScreen({ userNumber, onGameOver }) {
 
 export default GameScreen;
 
+const deviceWidth = Dimensions.get("window").width;
+
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 24,
+    marginHorizontal: deviceWidth > 800 ? 128 : 24,
   },
   instructionText: {
     marginBottom: 12,
