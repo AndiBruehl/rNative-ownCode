@@ -5,7 +5,8 @@ import {
   Alert,
   Text,
   FlatList,
-  Dimensions,
+  // Dimensions,
+  useWindowDimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -33,6 +34,7 @@ function GameScreen({ userNumber, onGameOver }) {
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [guessRounds, setGuessRounds] = useState([initialGuess]);
+  const { width, height } = useWindowDimensions();
 
   useEffect(() => {
     if (currentGuess === userNumber) {
@@ -76,8 +78,17 @@ function GameScreen({ userNumber, onGameOver }) {
 
   const guessRoundsListLength = guessRounds.length;
 
+  const marginTopDistance = height > 800 ? 100 : -10;
+  const marginHorizontalDistance = width > 800 ? 128 : 24;
+
   return (
-    <View style={styles.screen}>
+    <View
+      style={[
+        styles.rootContainer,
+        { marginTop: marginTopDistance },
+        { marginHorizontal: marginHorizontalDistance },
+      ]}
+    >
       <Title>Ist es die...?</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
@@ -116,13 +127,14 @@ function GameScreen({ userNumber, onGameOver }) {
 
 export default GameScreen;
 
-const deviceWidth = Dimensions.get("window").width;
+// const deviceWidth = Dimensions.get("window").width;
+// const deviceHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    padding: 24,
-    marginHorizontal: deviceWidth > 800 ? 128 : 24,
+    // margin: deviceHeight > 800 ? 100 : -10,
+    // marginHorizontal: deviceWidth > 800 ? 128 : 24,
   },
   instructionText: {
     marginBottom: 12,

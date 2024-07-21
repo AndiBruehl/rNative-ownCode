@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { TextInput, View, StyleSheet, Alert, Dimensions } from "react-native";
+import {
+  TextInput,
+  View,
+  StyleSheet,
+  Alert,
+  // Dimensions,
+  useWindowDimensions,
+} from "react-native";
 
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Title from "../components/ui/Title";
@@ -9,6 +16,8 @@ import InstructionText from "../components/ui/InstructionText";
 
 function StartGameScreen({ onPickNumber }) {
   const [enteredNumber, setEnteredNumber] = useState("");
+
+  const { width, height } = useWindowDimensions();
 
   function numberInputHandler(enteredText) {
     setEnteredNumber(enteredText);
@@ -33,8 +42,10 @@ function StartGameScreen({ onPickNumber }) {
     onPickNumber(chosenNumber);
   }
 
+  const marginTopDistance = height > 800 ? 150 : 50;
+
   return (
-    <View style={styles.rootContainer}>
+    <View style={[styles.rootContainer, { marginTop: marginTopDistance }]}>
       <Title>Errate die Zahl!</Title>
       <Card>
         <InstructionText>Bitte gib eine Zahl ein...</InstructionText>
@@ -68,13 +79,15 @@ function StartGameScreen({ onPickNumber }) {
 
 export default StartGameScreen;
 
-const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
+// const deviceHeight = Dimensions.get("window").height;
+// const deviceWidth = Dimensions.get("window").width;
+
+// console.log("Device height:", deviceHeight);
 
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    marginTop: deviceHeight < 180 ? 10 : 100,
+    // marginTop: deviceHeight > 800 ? 150 : 50,
     // marginHorizontal: deviceWidth > 800 ? 128 : 0,
     alignItems: "center",
   },
