@@ -7,4 +7,5 @@ To run your project, navigate to the directory and run one of the following npm 
 
 
 04-app - GuessMyNumber
+05-app - GuessMyNumber multiple Device Support
 
