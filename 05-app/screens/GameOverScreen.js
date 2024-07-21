@@ -1,35 +1,66 @@
-import { View, Image, Text, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  useWindowDimensions,
+} from "react-native";
 import Title from "../components/ui/Title";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Colors from "../constants/colors";
 
 function GameOverScreen({ roundsNumber, userNumber, onStartNewGame }) {
+  const { width, height } = useWindowDimensions();
+
+  let imageSize = 300;
+
+  if (width < 380) {
+    imageSize = 150;
+  }
+
+  if (height < 400) {
+    imageSize = 80;
+  }
+
+  const imageStyle = {
+    width: imageSize,
+    height: imageSize,
+    borderRadius: imageSize / 2,
+  };
   return (
-    <View style={styles.rootContainer}>
-      <Title>SPIEL VORBEI!</Title>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.image}
-          source={require("../assets/images/success.png")}
-        />
+    <ScrollView style={styles.screen}>
+      <View style={styles.rootContainer}>
+        <Title>SPIEL VORBEI!</Title>
+        <View style={[styles.imageContainer, imageStyle]}>
+          <Image
+            style={styles.image}
+            source={require("../assets/images/success.png")}
+          />
+        </View>
+        <Text style={styles.summaryText}>
+          Dein Telefon brauchte{" "}
+          <Text style={styles.highlight}>{roundsNumber}</Text> Runden, um die
+          Nummer <Text style={styles.highlight}>{userNumber}</Text> zu
+          erraten...
+        </Text>
+        <PrimaryButton onPress={onStartNewGame}>
+          Starte ein neues Spiel
+        </PrimaryButton>
       </View>
-      <Text style={styles.summaryText}>
-        Dein Telefon brauchte{" "}
-        <Text style={styles.highlight}>{roundsNumber}</Text> Runden, um die
-        Nummer <Text style={styles.highlight}>{userNumber}</Text> zu erraten...
-      </Text>
-      <PrimaryButton onPress={onStartNewGame}>
-        Starte ein neues Spiel
-      </PrimaryButton>
-    </View>
+    </ScrollView>
   );
 }
 
 export default GameOverScreen;
 
-const deviceWidth = Dimensions.get("window").width;
+// const deviceWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   rootContainer: {
     flex: 1,
     padding: 24,
@@ -37,9 +68,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imageContainer: {
-    width: deviceWidth < 380 ? 100 : 200,
-    height: deviceWidth < 380 ? 100 : 200,
-    borderRadius: deviceWidth < 380 ? 50 : 100,
+    // width: deviceWidth < 380 ? 150 : 300,
+    // height: deviceWidth < 380 ? 150 : 300,
+    // borderRadius: deviceWidth < 380 ? 75 : 150,
     borderWidth: 3,
     borderColor: Colors.primary800,
     overflow: "hidden",
