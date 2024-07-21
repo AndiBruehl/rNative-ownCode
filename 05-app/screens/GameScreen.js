@@ -3,9 +3,7 @@ import {
   View,
   StyleSheet,
   Alert,
-  Text,
   FlatList,
-  // Dimensions,
   useWindowDimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -78,18 +76,8 @@ function GameScreen({ userNumber, onGameOver }) {
 
   const guessRoundsListLength = guessRounds.length;
 
-  const marginTopDistance = height > 800 ? 100 : -10;
-  const marginHorizontalDistance = width > 800 ? 128 : 24;
-
-  return (
-    <View
-      style={[
-        styles.rootContainer,
-        { marginTop: marginTopDistance },
-        { marginHorizontal: marginHorizontalDistance },
-      ]}
-    >
-      <Title>Ist es die...?</Title>
+  let content = (
+    <>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
         <InstructionText style={styles.instructionText}>
@@ -108,6 +96,34 @@ function GameScreen({ userNumber, onGameOver }) {
           </View>
         </View>
       </Card>
+    </>
+  );
+
+  if (width > 500) {
+    content = (
+      <>
+        <View style={styles.buttonsContainerWide}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
+              <Ionicons name="add" size={24} color="white" />{" "}
+            </PrimaryButton>
+          </View>
+          <NumberContainer>{currentGuess}</NumberContainer>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
+              <Ionicons name="remove" size={24} color="white" />{" "}
+            </PrimaryButton>
+          </View>
+        </View>
+      </>
+    );
+  }
+
+  return (
+    <View style={styles.screen}>
+      <Title>Ist es die...?</Title>
+
+      {content}
       <View style={styles.listContainer}>
         {/* {guessRounds.map(guessRound => <Text key={guessRound}>{guessRound}</Text>)} */}
         <FlatList
@@ -127,14 +143,11 @@ function GameScreen({ userNumber, onGameOver }) {
 
 export default GameScreen;
 
-// const deviceWidth = Dimensions.get("window").width;
-// const deviceHeight = Dimensions.get("window").height;
-
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    // margin: deviceHeight > 800 ? 100 : -10,
-    // marginHorizontal: deviceWidth > 800 ? 128 : 24,
+    padding: 24,
+    alignItems: "center",
   },
   instructionText: {
     marginBottom: 12,
@@ -144,6 +157,10 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
+  },
+  buttonsContainerWide: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   listContainer: {
     flex: 1,
