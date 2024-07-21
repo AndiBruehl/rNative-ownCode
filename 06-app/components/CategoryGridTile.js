@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
   gridItem: {
     flex: 1,
     margin: 16,
-    // marginTop: 50,
     height: 150,
     borderRadius: 8,
     elevation: 4,
@@ -51,6 +50,6 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 18,
-    color: "#3a3a3a",
+    color: "3a3a3a",
   },
 });
