@@ -1,12 +1,28 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 
 function MealItem({ title, imageUrl }) {
   return (
     <View>
-      <Text>{title}</Text>
-      <Image source={imageUrl} />
+      <Pressable>
+        <View>
+          <Image source={{ uri: imageUrl }} style={[styles.image]} />
+          <Text style={[styles.title]}>{title}</Text>
+        </View>
+      </Pressable>
     </View>
   );
 }
 
 export default MealItem;
+
+const styles = StyleSheet.create({
+  image: {
+    width: "100%",
+    height: 200,
+  },
+  title: {
+    fontWeight: "bold",
+    textAlign_: "center",
+    fontSize: 18,
+  },
+});
