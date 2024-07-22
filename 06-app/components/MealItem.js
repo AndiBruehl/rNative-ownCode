@@ -1,12 +1,17 @@
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 
-function MealItem({ title, imageUrl }) {
+function MealItem({ title, imageUrl, duration, affordability, complexity }) {
   return (
     <View>
       <Pressable>
         <View>
           <Image source={{ uri: imageUrl }} style={[styles.image]} />
           <Text style={[styles.title]}>{title}</Text>
+        </View>
+        <View>
+          <Text>{duration}min</Text>
+          <Text>{complexity.toUpperCase()}</Text>
+          <Text>{affordability.toUpperCase()}</Text>
         </View>
       </Pressable>
     </View>
