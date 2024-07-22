@@ -2,7 +2,7 @@ import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 
 function MealItem({ title, imageUrl, duration, affordability, complexity }) {
   return (
-    <View>
+    <View style={[styles.mealItem]}>
       <Pressable>
         <View>
           <Image source={{ uri: imageUrl }} style={[styles.image]} />
@@ -21,6 +21,12 @@ function MealItem({ title, imageUrl, duration, affordability, complexity }) {
 export default MealItem;
 
 const styles = StyleSheet.create({
+  mealItem: {
+    margin: 16,
+    borderRadius: 8,
+    overflow: "hidden",
+    backgroundColor: "#a1a1a1",
+  },
   image: {
     width: "100%",
     height: 200,
