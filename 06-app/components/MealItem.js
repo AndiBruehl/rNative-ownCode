@@ -7,7 +7,13 @@ import {
   Platform,
 } from "react-native";
 
+import { useNavigation } from "@react-navigation/native";
+
 function MealItem({ title, imageUrl, duration, affordability, complexity }) {
+  const navigation = useNavigation();
+
+  navigation.navigate("MealDetail");
+
   return (
     <View style={[styles.mealItem]}>
       <Pressable
