@@ -9,10 +9,21 @@ import {
 
 import { useNavigation } from "@react-navigation/native";
 
-function MealItem({ title, imageUrl, duration, affordability, complexity }) {
+function MealItem({
+  id,
+  title,
+  imageUrl,
+  duration,
+  affordability,
+  complexity,
+}) {
   const navigation = useNavigation();
 
-  navigation.navigate("MealDetail");
+  function selectMealItemHandler() {
+    navigation.navigate("MealDetail", {
+      mealId: id,
+    });
+  }
 
   return (
     <View style={[styles.mealItem]}>
@@ -22,7 +33,7 @@ function MealItem({ title, imageUrl, duration, affordability, complexity }) {
           styles.button,
           pressed ? styles.buttonPressed : null,
         ]}
-        // onPress={onPress}
+        onPress={selectMealItemHandler}
       >
         <View style={[styles.innerContainer]}>
           <View>
