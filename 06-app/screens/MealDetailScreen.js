@@ -1,31 +1,36 @@
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-
+import { Image, ScrollView, StyleSheet, Text, View, Alert } from "react-native";
+import { useLayoutEffect, useContext } from "react";
 import { MEALS } from "../data/dummy-data";
 import MealDetails from "../components/MealDetails";
 import Subtitle from "../components/MealDetailStyles/Subtitle";
 import List from "../components/MealDetailStyles/List";
-
-import { useLayoutEffect } from "react";
 import IconButton from "../components/IconButton";
+import { FavoritesContext } from "../models/FavoritesContext";
 
 function MealDetailScreen({ route, navigation }) {
-  const mealId = route.params.mealId;
+  const favoriteMealsCtx = useContext(FavoritesContext);
 
+  const mealId = route.params.mealId;
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
+  const mealIsFavorite = favoriteMealsCtx.ids.includes(mealId);
+
   function headerButtonPressHandler() {
-    console.log("PRESSED!!!!");
+    if (mealIsFavorite) {
+      favoriteMealsCtx.removeFavorite(mealId);
+      Alert.alert("Removed", "The meal was removed from your favorites.");
+    } else {
+      favoriteMealsCtx.addFavorite(mealId);
+      Alert.alert("Added", "The meal was added to your favorites.");
+    }
   }
 
   useLayoutEffect(() => {
-    const mealTitle = MEALS.find((meal) => meal.id === mealId).title;
-
     navigation.setOptions({
-      title: mealTitle,
       headerRight: () => {
         return (
           <IconButton
-            icon="star"
+            icon={mealIsFavorite ? "star" : "star-outline"}
             color="#ccc"
             title="tap me"
             onPress={headerButtonPressHandler}
@@ -33,7 +38,7 @@ function MealDetailScreen({ route, navigation }) {
         );
       },
     });
-  }, [mealId, navigation, headerButtonPressHandler]);
+  }, [navigation, headerButtonPressHandler, mealIsFavorite]);
 
   return (
     <ScrollView style={[styles.scroll]}>
@@ -47,11 +52,11 @@ function MealDetailScreen({ route, navigation }) {
           complexity={selectedMeal.complexity}
         />
       </View>
-      <View styles={styles.listOuterContainer}>
-        <View styles={styles.listContainer}>
-          <Subtitle children={"INGREDIENTS"} />
+      <View style={styles.listOuterContainer}>
+        <View style={styles.listContainer}>
+          <Subtitle>INGREDIENTS</Subtitle>
           <List data={selectedMeal.ingredients} />
-          <Subtitle children={"STEPS"} />
+          <Subtitle>STEPS</Subtitle>
           <List data={selectedMeal.steps} />
         </View>
       </View>
@@ -61,7 +66,7 @@ function MealDetailScreen({ route, navigation }) {
 
 export default MealDetailScreen;
 
-styles = StyleSheet.create({
+const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: 350,
@@ -73,7 +78,6 @@ styles = StyleSheet.create({
     textAlign: "center",
     color: "#ccc",
   },
-
   detailText: {
     color: "#ccc",
   },
