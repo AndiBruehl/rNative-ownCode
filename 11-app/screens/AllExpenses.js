@@ -1,7 +1,7 @@
-import React from "react";
+import { Text } from "react-native";
 
 function AllExpenses() {
-  return <div>AllExpenses</div>;
+  return <Text>AllExpenses Screen</Text>;
 }
 
 export default AllExpenses;
