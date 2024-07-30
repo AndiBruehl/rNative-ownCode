@@ -8,4 +8,8 @@ To run your project, navigate to the directory and run one of the following npm 
 
 04-app - GuessMyNumber
 05-app - GuessMyNumber multiple Device Support
+09-app MEALS APP with Context-API
+10-app MEALS APP with Redux
+11-app Expense Tracker
+
 
