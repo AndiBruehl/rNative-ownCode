@@ -1,13 +1,31 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import ExpensesSummary from "./ExpensesSummary";
 import ExpensesList from "./ExpensesList";
 import { GlobalStyles } from "../../constants/styles";
 
-function ExpensesOutput({ expenses, expensesPeriod }) {
+function ExpensesOutput({
+  expenses,
+  expensesPeriod,
+  fallbackText = "No expenses found.",
+}) {
+  // Validate props
+  if (!Array.isArray(expenses)) {
+    console.error("Expenses prop is not an array");
+    return <Text style={styles.infoText}>Error: Invalid expenses data</Text>;
+  }
+
+  let content = <Text style={styles.infoText}>{fallbackText}</Text>;
+
+  if (expenses.length > 0) {
+    // Ensure ExpensesList is properly handling an empty array
+    content = <ExpensesList expenses={expenses} />;
+  }
+
   return (
     <View style={styles.container}>
+      {/* Ensure ExpensesSummary handles empty or undefined expenses gracefully */}
       <ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
-      <ExpensesList expenses={expenses} />
+      {content}
     </View>
   );
 }
@@ -22,13 +40,9 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     backgroundColor: GlobalStyles.colors.primary700,
   },
-  period: {
-    fontSize: 12,
-    color: GlobalStyles.colors.primary700,
-  },
-  sum: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: GlobalStyles.colors.primary500,
+  infoText: {
+    color: "white",
+    textAlign: "center",
+    marginTop: 32,
   },
 });
