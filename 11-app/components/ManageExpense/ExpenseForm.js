@@ -8,7 +8,7 @@ import { useState } from "react";
 function ExpenseForm({ defaultValues, onCancel, onSubmit, submitButtonLabel }) {
   const [inputValues, setInputValues] = useState({
     amount: defaultValues ? defaultValues.amount.toString() : "",
-    date: defaultValues ? defaultValues.date.toString() : "",
+    date: defaultValues ? defaultValues.date.toISOString() : "",
     description: defaultValues ? defaultValues.description : "",
   });
 
