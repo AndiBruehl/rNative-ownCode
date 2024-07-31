@@ -1,12 +1,11 @@
 import { useLayoutEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "../constants/styles";
-import { IconButton } from "../components/UI/IconButton";
+import Button from "../components/UI/Button";
 
 function ManageExpense({ route, navigation }) {
   const editedExpenseId = route.params?.expenseId;
-
   const isEditing = !!editedExpenseId;
 
   useLayoutEffect(() => {
@@ -15,10 +14,32 @@ function ManageExpense({ route, navigation }) {
     });
   }, [navigation, isEditing]);
 
-  function deleteExpenseHandler() {}
+  function deleteExpenseHandler() {
+    navigation.goBack();
+  }
+
+  function cancelHandler() {
+    navigation.goBack();
+  }
+
+  function confirmHandler() {
+    navigation.goBack();
+  }
 
   return (
     <View style={styles.screenContainer}>
+      <View style={styles.buttons}>
+        <Button
+          style={[styles.button, styles.cancelButton]}
+          mode="flat"
+          onPress={cancelHandler}
+        >
+          <Text style={{ color: GlobalStyles.colors.error500 }}>Cancel</Text>
+        </Button>
+        <Button style={styles.button} onPress={confirmHandler}>
+          {isEditing ? "Update" : "Add"}
+        </Button>
+      </View>
       {isEditing && (
         <View style={styles.deleteContainer}>
           <Ionicons
@@ -41,11 +62,23 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: GlobalStyles.colors.primary800,
   },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button: {
+    minWidth: 120,
+    marginHorizontal: 8,
+  },
   deleteContainer: {
     marginTop: 16,
     paddingTop: 8,
     borderTopWidth: 2,
     borderTopColor: GlobalStyles.colors.primary200,
     alignItems: "center",
+  },
+  cancelButton: {
+    color: GlobalStyles.colors.error500,
   },
 });
