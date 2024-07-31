@@ -9,15 +9,15 @@ function ExpenseForm({ defaultValues, onCancel, onSubmit, submitButtonLabel }) {
   const [inputs, setInputs] = useState({
     amount: {
       value: defaultValues ? defaultValues.amount.toString() : "",
-      isValid: !!defaultValues,
+      isValid: true,
     },
     date: {
       value: defaultValues ? defaultValues.date.toISOString().slice(0, 10) : "",
-      isValid: !!defaultValues,
+      isValid: true,
     },
     description: {
       value: defaultValues ? defaultValues.description : "",
-      isValid: !!defaultValues,
+      isValid: true,
     },
   });
 
@@ -77,6 +77,7 @@ function ExpenseForm({ defaultValues, onCancel, onSubmit, submitButtonLabel }) {
         <Input
           style={styles.rowInput}
           label="Amount in €"
+          invalid={!inputs.amount.isValid}
           textInputConfig={{
             keyboardType: "decimal-pad",
             onChangeText: inputChangedHandler.bind(this, "amount"),
@@ -87,6 +88,7 @@ function ExpenseForm({ defaultValues, onCancel, onSubmit, submitButtonLabel }) {
         <Input
           style={styles.rowInput}
           label="Date"
+          invalid={!inputs.date.isValid}
           textInputConfig={{
             keyboardType: "number-pad",
             placeholder: "YYYY-MM-DD",
@@ -98,6 +100,7 @@ function ExpenseForm({ defaultValues, onCancel, onSubmit, submitButtonLabel }) {
       </View>
       <Input
         label="Description"
+        invalid={!inputs.description.isValid}
         textInputConfig={{
           multiline: true,
           onChangeText: inputChangedHandler.bind(this, "description"),
@@ -105,7 +108,9 @@ function ExpenseForm({ defaultValues, onCancel, onSubmit, submitButtonLabel }) {
         }}
       />
       {formIsInvalid && (
-        <Text>Invalid input values - please check your inputs.</Text>
+        <Text style={styles.errorText}>
+          Invalid input values - please check your inputs.
+        </Text>
       )}
       <View style={styles.buttons}>
         <Button
@@ -154,5 +159,10 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     color: GlobalStyles.colors.error500,
+  },
+  errorText: {
+    color: GlobalStyles.colors.error500,
+    textAlign: "center",
+    margin: 8,
   },
 });
