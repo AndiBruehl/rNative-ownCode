@@ -2,7 +2,6 @@ import { useContext, useLayoutEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalStyles } from "../constants/styles";
-import Button from "../components/UI/Button";
 import { ExpensesContext } from "../store/expenses-context";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 
@@ -45,19 +44,11 @@ function ManageExpense({ route, navigation }) {
 
   return (
     <View style={styles.screenContainer}>
-      <ExpenseForm />
-      <View style={styles.buttons}>
-        <Button
-          style={[styles.button, styles.cancelButton]}
-          mode="flat"
-          onPress={cancelHandler}
-        >
-          <Text style={{ color: GlobalStyles.colors.error500 }}>Cancel</Text>
-        </Button>
-        <Button style={styles.button} onPress={confirmHandler}>
-          {isEditing ? "Update" : "Add"}
-        </Button>
-      </View>
+      <ExpenseForm
+        onCancel={cancelHandler}
+        submitButtonLabel={isEditing ? "Update" : "Add"}
+      />
+
       {isEditing && (
         <View style={styles.deleteContainer}>
           <Ionicons
@@ -80,23 +71,11 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: GlobalStyles.colors.primary800,
   },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  button: {
-    minWidth: 120,
-    marginHorizontal: 8,
-  },
   deleteContainer: {
     marginTop: 16,
     paddingTop: 8,
     borderTopWidth: 2,
     borderTopColor: GlobalStyles.colors.primary200,
     alignItems: "center",
-  },
-  cancelButton: {
-    color: GlobalStyles.colors.error500,
   },
 });
