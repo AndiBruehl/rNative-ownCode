@@ -37,7 +37,7 @@ function ExpenseForm({ defaultValues, onCancel, onSubmit, submitButtonLabel }) {
       <View style={styles.inputsRow}>
         <Input
           style={styles.rowInput}
-          label="Amount"
+          label="Amount in €"
           textInputConfig={{
             keyboardType: "decimal-pad",
             onChangeText: inputChangedHandler.bind(this, "amount"),
