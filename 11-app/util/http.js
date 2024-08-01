@@ -8,7 +8,7 @@ export async function storeExpense(expenseData) {
     BACKEND_URL + "/expenses.json",
     expenseData
   );
-  const id = response.data.name; // name = id --> FB named it NAME
+  const id = response.data.name; // name = id --> FB named id NAME
   return id;
 }
 
