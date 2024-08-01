@@ -3,6 +3,8 @@
 # dependencies
 node_modules/
 
+API_KEY.js
+
 # Expo
 .expo/
 dist/
