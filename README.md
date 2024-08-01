@@ -15,6 +15,8 @@ multiple Device Support
 
 10-app MEALS APP with Redux
 
-11-app Expense Tracker
+11-app Expense Tracker (Firebase-Backend)
+
+12-app Authentication-Demo (Firebase-Backend)
 
 
