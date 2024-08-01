@@ -8,13 +8,15 @@ export const AuthContext = createContext({
 });
 
 function AuthContextProvider({ children }) {
-  const [authToken, setAuthToken] = useState();
+  const [authToken, setAuthToken] = useState(null); // Ensure initial state is null
 
   function authenticate(token) {
+    console.log("Authenticating with token:", token);
     setAuthToken(token);
   }
 
   function logout() {
+    console.log("Logging out");
     setAuthToken(null);
   }
 
