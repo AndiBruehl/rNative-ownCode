@@ -22,7 +22,7 @@ function LoginScreen() {
       setIsAuthenticating(false);
       return;
     }
-    setIsAuthenticating(false);
+    // setIsAuthenticating(false);
   }
 
   if (isAuthenticating) {

@@ -23,7 +23,7 @@ function SignupScreen() {
       setIsAuthenticating(false);
       return;
     }
-    setIsAuthenticating(false);
+    // setIsAuthenticating(false);
   }
 
   if (isAuthenticating) {
