@@ -6,6 +6,8 @@ import {
   useCameraPermissions,
 } from "expo-image-picker";
 
+import { Colors } from "../../constants/colors";
+
 function ImagePicker() {
   const [pickedImage, setPickedImage] = useState();
 
@@ -50,7 +52,7 @@ function ImagePicker() {
     }
   }
 
-  let imagePreview = <Text>No image taken yet.</Text>;
+  let imagePreview = <Text style={[styles.label]}>No image taken yet.</Text>;
 
   if (pickedImage) {
     imagePreview = <Image source={{ uri: pickedImage }} style={styles.image} />;
@@ -58,7 +60,7 @@ function ImagePicker() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.imagePreview}>{imagePreview}</View>
+      <View style={[styles.imagePreview]}>{imagePreview}</View>
       <Button title="Take Image Now" onPress={takeImageHandler} />
     </View>
   );
@@ -76,13 +78,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: "center",
     alignItems: "center",
-    borderColor: "#ccc",
-    borderWidth: 1,
-    backgroundColor: "#e0e0e0",
+    // borderColor: "#ccc",
+    // borderWidth: 1,
+    // backgroundColor: "#e0e0e0",
   },
   image: {
     width: "100%",
     height: "100%",
+  },
+  label: {
+    fontWeight: "bold",
+    color: Colors.primary500,
   },
 });
 
