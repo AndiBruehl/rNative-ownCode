@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Alert, Button, Image, Text, View, StyleSheet } from "react-native";
+import { Alert, Image, Text, View, StyleSheet } from "react-native";
 import {
   launchCameraAsync,
   PermissionStatus,
   useCameraPermissions,
 } from "expo-image-picker";
-
 import { Colors } from "../../constants/colors";
+import OutlinedButton from "../ui/OutlinedButton";
 
 function ImagePicker() {
   const [pickedImage, setPickedImage] = useState();
@@ -45,14 +45,11 @@ function ImagePicker() {
     });
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
-      console.log(result.assets[0].uri);
       setPickedImage(result.assets[0].uri);
-    } else {
-      console.log("Image picking was canceled or failed");
     }
   }
 
-  let imagePreview = <Text style={[styles.label]}>No image taken yet.</Text>;
+  let imagePreview = <Text style={styles.label}>No image taken yet.</Text>;
 
   if (pickedImage) {
     imagePreview = <Image source={{ uri: pickedImage }} style={styles.image} />;
@@ -60,8 +57,10 @@ function ImagePicker() {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.imagePreview]}>{imagePreview}</View>
-      <Button title="Take Image Now" onPress={takeImageHandler} />
+      <View style={styles.imagePreview}>{imagePreview}</View>
+      <OutlinedButton icon="camera" onPress={takeImageHandler}>
+        Take Image Now
+      </OutlinedButton>
     </View>
   );
 }
@@ -78,9 +77,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: "center",
     alignItems: "center",
-    // borderColor: "#ccc",
-    // borderWidth: 1,
-    // backgroundColor: "#e0e0e0",
+    borderRadius: 4,
+    backgroundColor: Colors.primary100,
   },
   image: {
     width: "100%",
@@ -88,7 +86,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontWeight: "bold",
-    color: Colors.primary500,
+    color: Colors.primary700,
   },
 });
 
