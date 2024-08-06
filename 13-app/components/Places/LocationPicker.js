@@ -9,9 +9,13 @@ import { Alert, Text, View, StyleSheet, Image } from "react-native";
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../ui/OutlinedButton";
 import { getMapPreview } from "../../util/location";
+import { useNavigation } from "@react-navigation/native";
 
 function LocationPicker() {
   const [pickedLocation, setPickedLocation] = useState(null);
+
+  const navigation = useNavigation();
+
   const [locationPermissionInformation, requestPermission] =
     useForegroundPermissions();
 
@@ -48,7 +52,9 @@ function LocationPicker() {
     });
   }
 
-  function pickOnMapHandler() {}
+  function pickOnMapHandler() {
+    navigation.navigate("Map");
+  }
 
   let locationPreview = (
     <Text style={styles.label}>No location chosen yet.</Text>

@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AllPlaces from "./screens/AllPlaces";
 import AddPlace from "./screens/AddPlace";
+import Map from "./screens/Map";
 import IconButton from "./components/ui/IconButton";
 import { Colors } from "./constants/colors";
 
@@ -42,6 +43,14 @@ export default function App() {
             options={{
               headerTitleAlign: "center",
               title: "Add a new Place",
+            }}
+          />
+          <Stack.Screen
+            name="Map"
+            component={Map}
+            options={{
+              headerTitleAlign: "center",
+              title: "Choose Location",
             }}
           />
         </Stack.Navigator>
