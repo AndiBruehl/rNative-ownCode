@@ -69,12 +69,13 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 50,
   },
   imagePreview: {
+    marginTop: 20,
     width: "100%",
     height: 200,
     marginBottom: 10,
+    marginVertical: 8,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 4,

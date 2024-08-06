@@ -5,7 +5,7 @@ import {
   PermissionStatus,
 } from "expo-location";
 
-import { Alert, View, StyleSheet } from "react-native";
+import { Alert, Text, View, StyleSheet } from "react-native";
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../ui/OutlinedButton";
 
@@ -46,9 +46,11 @@ function LocationPicker() {
   function pickOnMapHandler() {}
 
   return (
-    <View style={styles.container}>
-      <View style={styles.locationPreview}>{/* <Text>LOCATION</Text> */}</View>
-      <View style={styles.buttons}>
+    <View>
+      <View style={styles.mapPreview}>
+        <Text style={styles.label}>No location chosen yet.</Text>
+      </View>
+      <View style={styles.actions}>
         <OutlinedButton icon="location" onPress={getLocationHandler}>
           Locate User
         </OutlinedButton>
@@ -61,25 +63,26 @@ function LocationPicker() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 50,
-  },
-  locationPreview: {
+  mapPreview: {
+    marginTop: 10,
     width: "100%",
     height: 200,
-    marginBottom: 10,
+    // marginBottom: 10,
+    marginVertical: 8,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 4,
     backgroundColor: Colors.primary100,
   },
-  buttons: {
+  actions: {
     width: "100%",
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "space-around",
     paddingHorizontal: 20,
+  },
+  label: {
+    fontWeight: "bold",
+    color: Colors.primary700,
   },
 });
 
