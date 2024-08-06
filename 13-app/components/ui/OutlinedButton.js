@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary500,
     paddingVertical: 6,
     paddingHorizontal: 12,
+    borderRadius: 4,
   },
   pressed: {
     opacity: 0.7,
