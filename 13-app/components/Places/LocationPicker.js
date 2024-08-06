@@ -4,13 +4,14 @@ import {
   useForegroundPermissions,
   PermissionStatus,
 } from "expo-location";
+import { Alert, Text, View, StyleSheet, Image } from "react-native";
 
-import { Alert, Text, View, StyleSheet } from "react-native";
 import { Colors } from "../../constants/colors";
 import OutlinedButton from "../ui/OutlinedButton";
+import { getMapPreview } from "../../util/location";
 
 function LocationPicker() {
-  const [location, setLocation] = useState(null);
+  const [pickedLocation, setPickedLocation] = useState(null);
   const [locationPermissionInformation, requestPermission] =
     useForegroundPermissions();
 
@@ -41,16 +42,32 @@ function LocationPicker() {
     }
 
     const location = await getCurrentPositionAsync();
-    console.log(location);
+    setPickedLocation({
+      lat: location.coords.latitude,
+      lng: location.coords.longitude,
+    });
   }
 
   function pickOnMapHandler() {}
 
+  let locationPreview = (
+    <Text style={styles.label}>No location chosen yet.</Text>
+  );
+
+  if (pickedLocation) {
+    locationPreview = (
+      <Image
+        style={styles.image}
+        source={{
+          uri: getMapPreview(pickedLocation.lat, pickedLocation.lng),
+        }}
+      />
+    );
+  }
+
   return (
     <View>
-      <View style={styles.mapPreview}>
-        <Text style={styles.label}>No location chosen yet.</Text>
-      </View>
+      <View style={styles.mapPreview}>{locationPreview}</View>
       <View style={styles.actions}>
         <OutlinedButton icon="location" onPress={getLocationHandler}>
           Locate User
@@ -68,7 +85,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: "100%",
     height: 200,
-    // marginBottom: 10,
+    overflow: "hidden",
     marginVertical: 8,
     justifyContent: "center",
     alignItems: "center",
@@ -84,6 +101,11 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: "bold",
     color: Colors.primary700,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 4,
   },
 });
 

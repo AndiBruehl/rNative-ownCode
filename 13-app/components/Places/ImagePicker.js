@@ -80,10 +80,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 4,
     backgroundColor: Colors.primary100,
+    overflow: "hidden",
   },
   image: {
     width: "100%",
     height: "100%",
+    borderRadius: 4,
   },
   label: {
     fontWeight: "bold",
