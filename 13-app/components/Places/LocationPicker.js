@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   getCurrentPositionAsync,
   useForegroundPermissions,
@@ -10,6 +10,7 @@ import { Colors } from "../../constants/colors";
 import OutlinedButton from "../ui/OutlinedButton";
 
 function LocationPicker() {
+  const [location, setLocation] = useState(null);
   const [locationPermissionInformation, requestPermission] =
     useForegroundPermissions();
 
