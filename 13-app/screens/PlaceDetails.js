@@ -27,7 +27,7 @@ function PlaceDetails({ route, navigation }) {
   if (!fetchedPlace) {
     return (
       <View style={styles.fallback}>
-        <Text>Loading place data...</Text>
+        <Text style={styles.fallback.fallbackText}>Loading place data...</Text>
       </View>
     );
   }
@@ -54,6 +54,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  fallbackText: {
+    color: Colors.primary50,
   },
   image: {
     height: "35%",
