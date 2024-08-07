@@ -1,13 +1,12 @@
-import { Alert, Image, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { Alert, Image, Text, View, StyleSheet } from "react-native";
 import {
   launchCameraAsync,
-  useCameraPermissions,
   PermissionStatus,
-} from 'expo-image-picker';
-import { useState } from 'react';
-
-import { Colors } from '../../constants/colors';
-import OutlinedButton from '../UI/OutlinedButton';
+  useCameraPermissions,
+} from "expo-image-picker";
+import { Colors } from "../../constants/colors";
+import OutlinedButton from "../ui/OutlinedButton";
 
 function ImagePicker({ onTakeImage }) {
   const [pickedImage, setPickedImage] = useState();
@@ -18,14 +17,13 @@ function ImagePicker({ onTakeImage }) {
   async function verifyPermissions() {
     if (cameraPermissionInformation.status === PermissionStatus.UNDETERMINED) {
       const permissionResponse = await requestPermission();
-
       return permissionResponse.granted;
     }
 
     if (cameraPermissionInformation.status === PermissionStatus.DENIED) {
       Alert.alert(
-        'Insufficient Permissions!',
-        'You need to grant camera permissions to use this app.'
+        "Insufficient Permissions!",
+        "Please grant required permissions to move on."
       );
       return false;
     }
@@ -40,47 +38,60 @@ function ImagePicker({ onTakeImage }) {
       return;
     }
 
-    const image = await launchCameraAsync({
+    const result = await launchCameraAsync({
       allowsEditing: true,
       aspect: [16, 9],
       quality: 0.5,
     });
 
-    setPickedImage(image.uri);
-    onTakeImage(image.uri);
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      setPickedImage(result.assets[0].uri);
+      onTakeImage(result.assets[0].uri);
+    }
   }
 
-  let imagePreview = <Text>No image taken yet.</Text>;
+  let imagePreview = <Text style={styles.label}>No image taken yet.</Text>;
 
   if (pickedImage) {
-    imagePreview = <Image style={styles.image} source={{ uri: pickedImage }} />;
+    imagePreview = <Image source={{ uri: pickedImage }} style={styles.image} />;
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.imagePreview}>{imagePreview}</View>
       <OutlinedButton icon="camera" onPress={takeImageHandler}>
-        Take Image
+        Take Image Now
       </OutlinedButton>
     </View>
   );
 }
 
-export default ImagePicker;
-
 const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
   imagePreview: {
-    width: '100%',
+    marginTop: 20,
+    width: "100%",
     height: 200,
+    marginBottom: 10,
     marginVertical: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.primary100,
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 4,
-    overflow: 'hidden',
+    backgroundColor: Colors.primary100,
+    overflow: "hidden",
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
+    borderRadius: 4,
+  },
+  label: {
+    fontWeight: "bold",
+    color: Colors.primary700,
   },
 });
+
+export default ImagePicker;

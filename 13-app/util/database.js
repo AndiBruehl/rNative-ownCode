@@ -1,117 +1,79 @@
-import * as SQLite from 'expo-sqlite';
+let db; // Initialisiere db als Variable außerhalb der Funktionen
+import { Alert } from "react-native";
 
-import { Place } from '../models/place';
+// Initialize the database
+export const init = async (database) => {
+  db = database; // Setze `db` hier
+  try {
+    await db.execAsync(`
+      PRAGMA journal_mode = WAL;
+      CREATE TABLE IF NOT EXISTS places (
+        id INTEGER PRIMARY KEY NOT NULL,
+        title TEXT NOT NULL,
+        imageUri TEXT NOT NULL,
+        address TEXT NOT NULL,
+        lat REAL NOT NULL,
+        lng REAL NOT NULL
+      )
+    `);
+    console.log("Database initialized!");
+  } catch (error) {
+    console.log("Error while initializing the database:", error);
+  }
+};
 
-const database = SQLite.openDatabase('places.db');
+export const insertPlace = async (database, place) => {
+  if (!database) {
+    console.log("Database object is not provided");
+    return;
+  }
 
-export function init() {
-  const promise = new Promise((resolve, reject) => {
-    database.transaction((tx) => {
-      tx.executeSql(
-        `CREATE TABLE IF NOT EXISTS places (
-          id INTEGER PRIMARY KEY NOT NULL,
-          title TEXT NOT NULL,
-          imageUri TEXT NOT NULL,
-          address TEXT NOT NULL,
-          lat REAL NOT NULL,
-          lng REAL NOT NULL
-        )`,
-        [],
-        () => {
-          resolve();
-        },
-        (_, error) => {
-          reject(error);
-        }
-      );
-    });
-  });
+  if (!place) {
+    console.log("Place object is not provided");
+    return;
+  }
 
-  return promise;
-}
+  // Log the place object to see its structure
+  console.log("Place object:", place);
 
-export function insertPlace(place) {
-  const promise = new Promise((resolve, reject) => {
-    database.transaction((tx) => {
-      tx.executeSql(
-        `INSERT INTO places (title, imageUri, address, lat, lng) VALUES (?, ?, ?, ?, ?)`,
-        [
-          place.title,
-          place.imageUri,
-          place.address,
-          place.location.lat,
-          place.location.lng,
-        ],
-        (_, result) => {
-          resolve(result);
-        },
-        (_, error) => {
-          reject(error);
-        }
-      );
-    });
-  });
+  if (
+    !place.title ||
+    !place.imageUri ||
+    !place.address ||
+    !place.location ||
+    !place.location.lat ||
+    !place.location.lng
+  ) {
+    console.log("Invalid place object:", place);
+    return;
+  }
 
-  return promise;
-}
+  try {
+    await database.runAsync(
+      `INSERT INTO places (title, imageUri, address, lat, lng) VALUES (?, ?, ?, ?, ?)`,
+      [
+        place.title,
+        place.imageUri,
+        place.address,
+        place.location.lat,
+        place.location.lng,
+      ]
+    );
+    Alert.alert("Success", "Place added!");
+  } catch (error) {
+    console.log("Error during registration:", error);
+  }
+};
 
-export function fetchPlaces() {
-  const promise = new Promise((resolve, reject) => {
-    database.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM places',
-        [],
-        (_, result) => {
-          const places = [];
+export const fetchPlaces = async () => {
+  try {
+    const places = await db.getAllAsync("SELECT * FROM places", []);
+    console.log("Fetched places:", places);
+    return places;
+  } catch (error) {
+    console.log("Error fetching places:", error);
+    return []; // Sicherstellen, dass immer ein Array zurückgegeben wird
+  }
+};
 
-          for (const dp of result.rows._array) {
-            places.push(
-              new Place(
-                dp.title,
-                dp.imageUri,
-                {
-                  address: dp.address,
-                  lat: dp.lat,
-                  lng: dp.lng,
-                },
-                dp.id
-              )
-            );
-          }
-          resolve(places);
-        },
-        (_, error) => {
-          reject(error);
-        }
-      );
-    });
-  });
-
-  return promise;
-}
-
-export function fetchPlaceDetails(id) {
-  const promise = new Promise((resolve, reject) => {
-    database.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM places WHERE id = ?',
-        [id],
-        (_, result) => {
-          const dbPlace = result.rows._array[0];
-          const place = new Place(
-            dbPlace.title,
-            dbPlace.imageUri,
-            { lat: dbPlace.lat, lng: dbPlace.lng, address: dbPlace.address },
-            dbPlace.id
-          );
-          resolve(place);
-        },
-        (_, error) => {
-          reject(error);
-        }
-      );
-    });
-  });
-
-  return promise;
-}
+export { db };
