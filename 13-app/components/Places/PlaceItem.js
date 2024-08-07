@@ -1,14 +1,14 @@
-import { Colors } from "../../constants/colors";
-
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+
+import { Colors } from "../../constants/colors";
 
 function PlaceItem({ place, onSelect }) {
   return (
     <Pressable
-      onPress={onSelect.bind(this, place.id)}
       style={({ pressed }) => [styles.item, pressed && styles.pressed]}
+      onPress={onSelect.bind(this, place.id)}
     >
-      <Image source={{ uri: place.imageUri }} style={styles.image} />
+      <Image style={styles.image} source={{ uri: place.imageUri }} />
       <View style={styles.info}>
         <Text style={styles.title}>{place.title}</Text>
         <Text style={styles.address}>{place.address}</Text>
@@ -25,13 +25,12 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     borderRadius: 6,
     marginVertical: 12,
-    marginHorizontal: 6,
     backgroundColor: Colors.primary500,
     elevation: 2,
     shadowColor: "black",
+    shadowOpacity: 0.15,
     shadowOffset: { width: 1, height: 1 },
     shadowRadius: 2,
-    shadowOpacity: 0.15,
   },
   pressed: {
     opacity: 0.9,
@@ -49,10 +48,10 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 18,
-    color: Colors.primary700,
+    color: Colors.primary800,
   },
   address: {
-    fontSize: 16,
+    fontSize: 14,
     color: Colors.primary50,
   },
 });

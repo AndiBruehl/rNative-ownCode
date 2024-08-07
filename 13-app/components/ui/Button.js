@@ -1,7 +1,6 @@
-import React from "react";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text } from 'react-native';
 
-import { Colors } from "../../constants/colors";
+import { Colors } from '../../constants/colors';
 
 function Button({ onPress, children }) {
   return (
@@ -21,22 +20,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     margin: 4,
-    marginVertical: 12,
     backgroundColor: Colors.primary800,
-    borderRadius: 4,
     elevation: 2,
-    shadowColor: "black",
+    shadowColor: 'black',
+    shadowOpacity: 0.15,
     shadowOffset: { width: 1, height: 1 },
     shadowRadius: 2,
-    shadowOpacity: 0.15,
+    borderRadius: 4,
   },
   pressed: {
     opacity: 0.7,
   },
   text: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 16,
-    marginBottom: 4,
     color: Colors.primary50,
   },
 });

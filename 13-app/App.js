@@ -6,7 +6,7 @@ import AppLoading from "expo-app-loading";
 
 import AllPlaces from "./screens/AllPlaces";
 import AddPlace from "./screens/AddPlace";
-import IconButton from "./components/ui/IconButton";
+import IconButton from "./components/UI/IconButton";
 import { Colors } from "./constants/colors";
 import Map from "./screens/Map";
 import { init } from "./util/database";
@@ -33,7 +33,7 @@ export default function App() {
 
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
@@ -65,6 +65,7 @@ export default function App() {
               title: "Add a new Place",
             }}
           />
+          <Stack.Screen name="Map" component={Map} />
           <Stack.Screen
             name="PlaceDetails"
             component={PlaceDetails}
@@ -72,7 +73,6 @@ export default function App() {
               title: "Loading Place...",
             }}
           />
-          <Stack.Screen name="Map" component={Map} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

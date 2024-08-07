@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import { Alert, View, StyleSheet, Image, Text } from 'react-native';
 import {
   getCurrentPositionAsync,
   useForegroundPermissions,
   PermissionStatus,
-} from "expo-location";
-import { Alert, Text, View, StyleSheet, Image } from "react-native";
-
-import { Colors } from "../../constants/colors";
-import OutlinedButton from "../ui/OutlinedButton";
-import { getMapPreview, getAddress } from "../../util/location";
+} from 'expo-location';
 import {
-  useIsFocused,
   useNavigation,
   useRoute,
-} from "@react-navigation/native";
+  useIsFocused,
+} from '@react-navigation/native';
+
+import { Colors } from '../../constants/colors';
+import OutlinedButton from '../UI/OutlinedButton';
+import { getAddress, getMapPreview } from '../../util/location';
 
 function LocationPicker({ onPickLocation }) {
-  const [pickedLocation, setPickedLocation] = useState(null);
+  const [pickedLocation, setPickedLocation] = useState();
   const isFocused = useIsFocused();
 
   const navigation = useNavigation();
@@ -45,6 +45,7 @@ function LocationPicker({ onPickLocation }) {
         onPickLocation({ ...pickedLocation, address: address });
       }
     }
+
     handleLocation();
   }, [pickedLocation, onPickLocation]);
 
@@ -53,13 +54,14 @@ function LocationPicker({ onPickLocation }) {
       locationPermissionInformation.status === PermissionStatus.UNDETERMINED
     ) {
       const permissionResponse = await requestPermission();
+
       return permissionResponse.granted;
     }
 
     if (locationPermissionInformation.status === PermissionStatus.DENIED) {
       Alert.alert(
-        "Insufficient Permissions!",
-        "Please grant required permissions to move on."
+        'Insufficient Permissions!',
+        'You need to grant location permissions to use this app.'
       );
       return false;
     }
@@ -82,12 +84,10 @@ function LocationPicker({ onPickLocation }) {
   }
 
   function pickOnMapHandler() {
-    navigation.navigate("Map");
+    navigation.navigate('Map');
   }
 
-  let locationPreview = (
-    <Text style={styles.label}>No location chosen yet.</Text>
-  );
+  let locationPreview = <Text>No location picked yet.</Text>;
 
   if (pickedLocation) {
     locationPreview = (
@@ -115,33 +115,27 @@ function LocationPicker({ onPickLocation }) {
   );
 }
 
+export default LocationPicker;
+
 const styles = StyleSheet.create({
   mapPreview: {
-    marginTop: 10,
-    width: "100%",
+    width: '100%',
     height: 200,
-    overflow: "hidden",
     marginVertical: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: Colors.primary100,
+    borderRadius: 4,
+    overflow: 'hidden',
   },
   actions: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    paddingHorizontal: 20,
-  },
-  label: {
-    fontWeight: "bold",
-    color: Colors.primary700,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   image: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 4,
+    width: '100%',
+    height: '100%',
+    // borderRadius: 4
   },
 });
-
-export default LocationPicker;
