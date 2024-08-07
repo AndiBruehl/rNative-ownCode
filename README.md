@@ -19,6 +19,6 @@ multiple Device Support
 
 12-app Authentication-Demo (Firebase-Backend)
 
-13-app Using Native Device Features (Camera, Location and More)
+13-app Using Native Device Features (Camera, Location and More) - NOT WORKING DEPRECATED CODE!!!!!!!!!
 
 
