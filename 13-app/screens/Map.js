@@ -1,8 +1,14 @@
-import { useCallback, useLayoutEffect, useState } from 'react';
-import { Alert, StyleSheet } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
+import { Alert, StyleSheet, View, ActivityIndicator } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
 
-import IconButton from '../components/UI/IconButton';
+import IconButton from "../components/UI/IconButton";
 
 function Map({ navigation, route }) {
   const initialLocation = route.params && {
@@ -11,13 +17,51 @@ function Map({ navigation, route }) {
   };
 
   const [selectedLocation, setSelectedLocation] = useState(initialLocation);
-
-  const region = {
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [region, setRegion] = useState({
     latitude: initialLocation ? initialLocation.lat : 37.78,
     longitude: initialLocation ? initialLocation.lng : -122.43,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
-  };
+  });
+
+  useEffect(() => {
+    async function fetchLocation() {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          "Permission denied",
+          "Permission to access location was denied. Using default location instead."
+        );
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const location = await Location.getCurrentPositionAsync({});
+        setCurrentLocation({
+          lat: location.coords.latitude,
+          lng: location.coords.longitude,
+        });
+        setRegion({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        });
+      } catch (error) {
+        console.error("Error fetching location: ", error);
+      }
+      setIsLoading(false);
+    }
+
+    if (!initialLocation) {
+      fetchLocation();
+    } else {
+      setIsLoading(false);
+    }
+  }, [initialLocation]);
 
   function selectLocationHandler(event) {
     if (initialLocation) {
@@ -32,13 +76,13 @@ function Map({ navigation, route }) {
   const savePickedLocationHandler = useCallback(() => {
     if (!selectedLocation) {
       Alert.alert(
-        'No location picked!',
-        'You have to pick a location (by tapping on the map) first!'
+        "No location picked!",
+        "You have to pick a location (by tapping on the map) first!"
       );
       return;
     }
 
-    navigation.navigate('AddPlace', {
+    navigation.navigate("AddPlace", {
       pickedLat: selectedLocation.lat,
       pickedLng: selectedLocation.lng,
     });
@@ -60,18 +104,31 @@ function Map({ navigation, route }) {
     });
   }, [navigation, savePickedLocationHandler, initialLocation]);
 
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color="blue" />
+      </View>
+    );
+  }
+
   return (
-    <MapView
-      style={styles.map}
-      initialRegion={region}
-      onPress={selectLocationHandler}
-    >
+    <MapView style={styles.map} region={region} onPress={selectLocationHandler}>
       {selectedLocation && (
         <Marker
           title="Picked Location"
           coordinate={{
             latitude: selectedLocation.lat,
             longitude: selectedLocation.lng,
+          }}
+        />
+      )}
+      {currentLocation && !selectedLocation && (
+        <Marker
+          title="Current Location"
+          coordinate={{
+            latitude: currentLocation.lat,
+            longitude: currentLocation.lng,
           }}
         />
       )}
@@ -84,5 +141,10 @@ export default Map;
 const styles = StyleSheet.create({
   map: {
     flex: 1,
+  },
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
