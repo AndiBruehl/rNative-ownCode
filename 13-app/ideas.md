@@ -1,1 +1,1 @@
-- add remove-buttons
+- add remove-button to PlaceItem

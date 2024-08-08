@@ -27,7 +27,8 @@ function Map({ navigation, route }) {
   });
 
   useEffect(() => {
-    async function fetchLocation() {
+    let locationSubscription;
+    async function startLocationTracking() {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         Alert.alert(
@@ -39,17 +40,22 @@ function Map({ navigation, route }) {
       }
 
       try {
-        const location = await Location.getCurrentPositionAsync({});
-        setCurrentLocation({
-          lat: location.coords.latitude,
-          lng: location.coords.longitude,
-        });
-        setRegion({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        });
+        locationSubscription = await Location.watchPositionAsync(
+          {
+            accuracy: Location.Accuracy.High,
+            timeInterval: 1000,
+            distanceInterval: 1,
+          },
+          (location) => {
+            const { latitude, longitude } = location.coords;
+            setCurrentLocation({ lat: latitude, lng: longitude });
+            setRegion((prevRegion) => ({
+              ...prevRegion,
+              latitude,
+              longitude,
+            }));
+          }
+        );
       } catch (error) {
         console.error("Error fetching location: ", error);
       }
@@ -57,10 +63,16 @@ function Map({ navigation, route }) {
     }
 
     if (!initialLocation) {
-      fetchLocation();
+      startLocationTracking();
     } else {
       setIsLoading(false);
     }
+
+    return () => {
+      if (locationSubscription) {
+        locationSubscription.remove();
+      }
+    };
   }, [initialLocation]);
 
   function selectLocationHandler(event) {
@@ -70,7 +82,7 @@ function Map({ navigation, route }) {
     const lat = event.nativeEvent.coordinate.latitude;
     const lng = event.nativeEvent.coordinate.longitude;
 
-    setSelectedLocation({ lat: lat, lng: lng });
+    setSelectedLocation({ lat, lng });
   }
 
   const savePickedLocationHandler = useCallback(() => {
