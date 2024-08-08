@@ -16,6 +16,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <>
+      {/* added SQLiteProvider um in der gesamten App Zugriff auf die DB zu haben... */}
       <SQLiteProvider databaseName="places.db" onInit={init}>
         <StatusBar style="light" />
         <NavigationContainer>
