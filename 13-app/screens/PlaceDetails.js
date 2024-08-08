@@ -1,22 +1,12 @@
 import { useEffect, useState } from "react";
-import { ScrollView, Image, View, Text, StyleSheet } from "react-native";
-import OutlinedButton from "../components/ui/OutlinedButton"; // Achte darauf, dass dieser Import korrekt ist
+import { ScrollView, Image, View, Text, StyleSheet, Alert } from "react-native";
+import IconButton from "../components/ui/IconButton";
+import OutlinedButton from "../components/ui/OutlinedButton";
 import { Colors } from "../constants/colors";
-import { fetchPlaceDetails } from "../util/database";
+import { fetchPlaceDetails, deletePlace } from "../util/database";
 
 function PlaceDetails({ route, navigation }) {
   const [fetchedPlace, setFetchedPlace] = useState();
-
-  function showOnMapHandler() {
-    if (fetchedPlace && fetchedPlace.lat && fetchedPlace.lng) {
-      navigation.navigate("Map", {
-        initialLat: fetchedPlace.lat,
-        initialLng: fetchedPlace.lng,
-      });
-    } else {
-      console.log("Location data is not available.");
-    }
-  }
 
   const selectedPlaceId = route.params.placeId;
 
@@ -32,6 +22,22 @@ function PlaceDetails({ route, navigation }) {
     loadPlaceData();
   }, [selectedPlaceId]);
 
+  async function deletePlaceHandler() {
+    await deletePlace(selectedPlaceId); // Call the deletePlace function with the place ID
+    navigation.goBack(); // Navigate back after deletion
+  }
+
+  function showOnMapHandler() {
+    if (fetchedPlace && fetchedPlace.lat && fetchedPlace.lng) {
+      navigation.navigate("Map", {
+        initialLat: fetchedPlace.lat,
+        initialLng: fetchedPlace.lng,
+      });
+    } else {
+      console.log("Location data is not available.");
+    }
+  }
+
   if (!fetchedPlace) {
     return (
       <View style={styles.fallback}>
@@ -40,8 +46,6 @@ function PlaceDetails({ route, navigation }) {
     );
   }
 
-  console.log(fetchedPlace); // Logge fetchedPlace, um zu überprüfen, ob die Daten korrekt sind
-
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: fetchedPlace.imageUri }} />
@@ -49,13 +53,21 @@ function PlaceDetails({ route, navigation }) {
         <View style={styles.addressContainer}>
           <Text style={styles.address}>{fetchedPlace.address}</Text>
         </View>
-        {fetchedPlace.lat && fetchedPlace.lng ? ( // Überprüfe, ob lat und lng vorhanden sind
-          <OutlinedButton icon="map" onPress={showOnMapHandler}>
-            View on Map
-          </OutlinedButton>
-        ) : (
-          <Text>Location not available</Text> // Fallback für fehlende Location-Daten
-        )}
+        <View>
+          {fetchedPlace.lat && fetchedPlace.lng ? (
+            <OutlinedButton icon="map" onPress={showOnMapHandler}>
+              View on Map
+            </OutlinedButton>
+          ) : (
+            <Text>Location not available</Text>
+          )}
+          <IconButton
+            icon="trash"
+            size={24}
+            color={Colors.danger500}
+            onPress={deletePlaceHandler} // Use the handler to delete the place
+          />
+        </View>
       </View>
     </ScrollView>
   );

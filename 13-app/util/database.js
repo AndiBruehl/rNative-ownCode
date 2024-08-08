@@ -85,4 +85,16 @@ export const fetchPlaceDetails = async (id) => {
   return firstRow;
 };
 
+// Delete a place by ID
+export const deletePlace = async (id) => {
+  try {
+    await db.runAsync(`DELETE FROM places WHERE id = ?`, [id]);
+    Alert.alert("Success", "Place deleted!");
+    console.log(`Place with ID ${id} deleted.`);
+  } catch (error) {
+    console.log("Error deleting place:", error);
+    Alert.alert("Error", "An error occurred while deleting the place.");
+  }
+};
+
 export { db };
