@@ -76,4 +76,13 @@ export const fetchPlaces = async () => {
   }
 };
 
+export const fetchPlaceDetails = async (id) => {
+  const stmt = await db.prepareAsync("SELECT * FROM places WHERE id = $id");
+  const result = await stmt.executeAsync({ $id: id });
+  const firstRow = await result.getFirstAsync();
+  await result.resetAsync();
+  console.log(firstRow);
+  return firstRow;
+};
+
 export { db };

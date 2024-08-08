@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ScrollView, Image, View, Text, StyleSheet } from "react-native";
-
-import OutlinedButton from "../components/ui/OutlinedButton";
+import OutlinedButton from "../components/ui/OutlinedButton"; // Achte darauf, dass dieser Import korrekt ist
 import { Colors } from "../constants/colors";
 import { fetchPlaceDetails } from "../util/database";
 
@@ -9,10 +8,14 @@ function PlaceDetails({ route, navigation }) {
   const [fetchedPlace, setFetchedPlace] = useState();
 
   function showOnMapHandler() {
-    navigation.navigate("Map", {
-      initialLat: fetchedPlace.location.lat,
-      initialLng: fetchedPlace.location.lng,
-    });
+    if (fetchedPlace && fetchedPlace.lat && fetchedPlace.lng) {
+      navigation.navigate("Map", {
+        initialLat: fetchedPlace.lat,
+        initialLng: fetchedPlace.lng,
+      });
+    } else {
+      console.log("Location data is not available.");
+    }
   }
 
   const selectedPlaceId = route.params.placeId;
@@ -37,6 +40,8 @@ function PlaceDetails({ route, navigation }) {
     );
   }
 
+  console.log(fetchedPlace); // Logge fetchedPlace, um zu überprüfen, ob die Daten korrekt sind
+
   return (
     <ScrollView>
       <Image style={styles.image} source={{ uri: fetchedPlace.imageUri }} />
@@ -44,9 +49,13 @@ function PlaceDetails({ route, navigation }) {
         <View style={styles.addressContainer}>
           <Text style={styles.address}>{fetchedPlace.address}</Text>
         </View>
-        <OutlinedButton icon="map" onPress={showOnMapHandler}>
-          View on Map
-        </OutlinedButton>
+        {fetchedPlace.lat && fetchedPlace.lng ? ( // Überprüfe, ob lat und lng vorhanden sind
+          <OutlinedButton icon="map" onPress={showOnMapHandler}>
+            View on Map
+          </OutlinedButton>
+        ) : (
+          <Text>Location not available</Text> // Fallback für fehlende Location-Daten
+        )}
       </View>
     </ScrollView>
   );
