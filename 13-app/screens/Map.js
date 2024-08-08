@@ -19,12 +19,7 @@ function Map({ navigation, route }) {
   const [selectedLocation, setSelectedLocation] = useState(initialLocation);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [region, setRegion] = useState({
-    latitude: initialLocation ? initialLocation.lat : 37.78,
-    longitude: initialLocation ? initialLocation.lng : -122.43,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
+  const [region, setRegion] = useState(null); // Start with null
 
   useEffect(() => {
     let locationSubscription;
@@ -49,11 +44,12 @@ function Map({ navigation, route }) {
           (location) => {
             const { latitude, longitude } = location.coords;
             setCurrentLocation({ lat: latitude, lng: longitude });
-            setRegion((prevRegion) => ({
-              ...prevRegion,
+            setRegion({
               latitude,
               longitude,
-            }));
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            });
           }
         );
       } catch (error) {
@@ -65,6 +61,12 @@ function Map({ navigation, route }) {
     if (!initialLocation) {
       startLocationTracking();
     } else {
+      setRegion({
+        latitude: initialLocation.lat,
+        longitude: initialLocation.lng,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
       setIsLoading(false);
     }
 
@@ -116,7 +118,7 @@ function Map({ navigation, route }) {
     });
   }, [navigation, savePickedLocationHandler, initialLocation]);
 
-  if (isLoading) {
+  if (isLoading || !region) {
     return (
       <View style={styles.centered}>
         <ActivityIndicator size="large" color="blue" />

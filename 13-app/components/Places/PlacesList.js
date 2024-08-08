@@ -6,8 +6,11 @@ function PlacesList({ places, onSelect }) {
   if (!places || places.length === 0) {
     return (
       <View style={styles.fallbackContainer}>
-        <Text style={styles.fallbackText}>
-          No places added yet - start adding some!
+        <Text style={[styles.fallbackText, styles.fallbackText1]}>
+          No places added yet...
+        </Text>
+        <Text style={[styles.fallbackText, styles.fallbackText2]}>
+          Let's add some!
         </Text>
       </View>
     );
@@ -35,7 +38,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   fallbackText: {
-    fontSize: 16,
     color: Colors.primary200,
+  },
+  fallbackText1: {
+    fontSize: 18,
+  },
+  fallbackText2: {
+    fontSize: 16,
   },
 });

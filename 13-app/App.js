@@ -16,7 +16,6 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <>
-      {/* added SQLiteProvider um in der gesamten App Zugriff auf die DB zu haben... */}
       <SQLiteProvider databaseName="places.db" onInit={init}>
         <StatusBar style="light" />
         <NavigationContainer>
@@ -55,6 +54,7 @@ export default function App() {
               component={PlaceDetails}
               options={{
                 title: "Details",
+                headerTintColor: "white", // Corrected this line
               }}
             />
             <Stack.Screen name="Map" component={Map} />

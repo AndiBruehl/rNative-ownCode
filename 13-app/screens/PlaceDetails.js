@@ -41,7 +41,7 @@ function PlaceDetails({ route, navigation }) {
   if (!fetchedPlace) {
     return (
       <View style={styles.fallback}>
-        <Text>Loading place data...</Text>
+        <Text style={styles.text}>Loading place data...</Text>
       </View>
     );
   }
@@ -98,5 +98,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 16,
+  },
+  text: {
+    color: Colors.primary500,
   },
 });
