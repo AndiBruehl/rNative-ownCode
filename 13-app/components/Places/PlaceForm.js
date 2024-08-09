@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     padding: 24,
+    marginBottom: 50,
   },
   label: {
     fontWeight: "bold",

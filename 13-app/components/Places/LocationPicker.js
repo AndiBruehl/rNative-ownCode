@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   mapPreview: {
     marginTop: 10,
     width: "100%",
-    height: 200,
+    height: 150,
     overflow: "hidden",
     marginVertical: 8,
     justifyContent: "center",
