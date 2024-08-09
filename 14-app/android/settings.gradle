@@ -1,4 +1,4 @@
-rootProject.name = 'RNCourse'
+rootProject.name = 'MemSnap'
 
 dependencyResolutionManagement {
   versionCatalogs {
