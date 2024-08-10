@@ -34,27 +34,28 @@ function Map({ navigation, route }) {
     let locationSubscription;
 
     async function startLocationTracking() {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert(
-          "Permission denied",
-          "Permission to access location was denied. Using default location instead."
-        );
-        setIsLoading(false);
-        return;
-      }
-
       try {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          Alert.alert(
+            "Permission denied",
+            "Permission to access location was denied. Using default location instead."
+          );
+          setIsLoading(false);
+          return;
+        }
+
         locationSubscription = await Location.watchPositionAsync(
           {
-            accuracy: Location.Accuracy.High,
-            timeInterval: 1000,
-            distanceInterval: 1,
+            accuracy: Location.Accuracy.Balanced,
+            timeInterval: 5000,
+            distanceInterval: 10,
           },
           (location) => {
             const { latitude, longitude } = location.coords;
+            setCurrentLocation({ lat: latitude, lng: longitude });
+
             if (!initialLocation && !region) {
-              setCurrentLocation({ lat: latitude, lng: longitude });
               setRegion({
                 latitude,
                 longitude,
@@ -66,8 +67,9 @@ function Map({ navigation, route }) {
         );
       } catch (error) {
         console.error("Error fetching location: ", error);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     }
 
     if (!initialLocation) {
@@ -83,7 +85,7 @@ function Map({ navigation, route }) {
     };
   }, [initialLocation, region]);
 
-  function selectLocationHandler(event) {
+  const selectLocationHandler = (event) => {
     if (initialLocation) {
       return;
     }
@@ -91,7 +93,12 @@ function Map({ navigation, route }) {
     const lng = event.nativeEvent.coordinate.longitude;
 
     setSelectedLocation({ lat, lng });
-  }
+    setRegion((prevRegion) => ({
+      ...prevRegion,
+      latitude: lat,
+      longitude: lng,
+    }));
+  };
 
   const savePickedLocationHandler = useCallback(() => {
     if (!selectedLocation) {
