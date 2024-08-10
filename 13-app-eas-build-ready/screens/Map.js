@@ -19,10 +19,20 @@ function Map({ navigation, route }) {
   const [selectedLocation, setSelectedLocation] = useState(initialLocation);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [region, setRegion] = useState(null); // Start with null
+  const [region, setRegion] = useState(
+    initialLocation
+      ? {
+          latitude: initialLocation.lat,
+          longitude: initialLocation.lng,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }
+      : null
+  );
 
   useEffect(() => {
     let locationSubscription;
+
     async function startLocationTracking() {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
@@ -43,13 +53,15 @@ function Map({ navigation, route }) {
           },
           (location) => {
             const { latitude, longitude } = location.coords;
-            setCurrentLocation({ lat: latitude, lng: longitude });
-            setRegion({
-              latitude,
-              longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            });
+            if (!initialLocation && !region) {
+              setCurrentLocation({ lat: latitude, lng: longitude });
+              setRegion({
+                latitude,
+                longitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              });
+            }
           }
         );
       } catch (error) {
@@ -61,12 +73,6 @@ function Map({ navigation, route }) {
     if (!initialLocation) {
       startLocationTracking();
     } else {
-      setRegion({
-        latitude: initialLocation.lat,
-        longitude: initialLocation.lng,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      });
       setIsLoading(false);
     }
 
@@ -75,7 +81,7 @@ function Map({ navigation, route }) {
         locationSubscription.remove();
       }
     };
-  }, [initialLocation]);
+  }, [initialLocation, region]);
 
   function selectLocationHandler(event) {
     if (initialLocation) {
@@ -103,19 +109,18 @@ function Map({ navigation, route }) {
   }, [navigation, selectedLocation]);
 
   useLayoutEffect(() => {
-    if (initialLocation) {
-      return;
+    if (!initialLocation) {
+      navigation.setOptions({
+        headerRight: ({ tintColor }) => (
+          <IconButton
+            icon="save"
+            size={24}
+            color={tintColor}
+            onPress={savePickedLocationHandler}
+          />
+        ),
+      });
     }
-    navigation.setOptions({
-      headerRight: ({ tintColor }) => (
-        <IconButton
-          icon="save"
-          size={24}
-          color={tintColor}
-          onPress={savePickedLocationHandler}
-        />
-      ),
-    });
   }, [navigation, savePickedLocationHandler, initialLocation]);
 
   if (isLoading || !region) {
