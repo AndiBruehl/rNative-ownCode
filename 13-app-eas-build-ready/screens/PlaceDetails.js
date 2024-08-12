@@ -53,7 +53,7 @@ function PlaceDetails({ route, navigation }) {
         <View style={styles.addressContainer}>
           <Text style={styles.address}>{fetchedPlace.address}</Text>
         </View>
-        <View>
+        {/* <View>
           {fetchedPlace.lat && fetchedPlace.lng ? (
             <OutlinedButton icon="map" onPress={showOnMapHandler}>
               View on Map
@@ -67,7 +67,7 @@ function PlaceDetails({ route, navigation }) {
             color={Colors.danger500}
             onPress={deletePlaceHandler} // Use the handler to delete the place
           />
-        </View>
+        </View> */}
       </View>
     </ScrollView>
   );
