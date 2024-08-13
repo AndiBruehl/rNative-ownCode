@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "17-app",
-    "slug": "17-app",
+    "name": "18-app",
+    "slug": "18-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -32,6 +32,12 @@
           "defaultChannel": "default"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "781a21d6-51cc-4811-9247-206117701aea"
+      }
+    },
+    "owner": "andibruehl"
   }
 }
